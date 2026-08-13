@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Message Board - mess.html</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f4f4f9; }
+        .container { max-width: 600px; margin: 0 auto; }
+        .message-box { background: white; border-radius: 6px; padding: 15px; margin-bottom: 15px; border-left: 5px solid #007bff; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .author { font-weight: bold; color: #007bff; }
+        .time { font-size: 0.8em; color: #888; float: right; }
+        .content { margin-top: 10px; color: #333; }
+        .clear-btn { background: #dc3545; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; float: right; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <button class="clear-btn" onclick="clearMessages()">Clear All Messages</button>
+        <h1>Public Message Log</h1>
+        <p><a href="index.html">← Back to Directory</a></p>
+        <hr>
+        
+        <!-- Output Area for HTML Messages -->
+        <div id="messagesContainer"></div>
+    </div>
+
+    <script>
+        function loadMessages() {
+            const container = document.getElementById('messagesContainer');
+            const messages = JSON.parse(localStorage.getItem('mess_html_posts') || '[]');
+
+            if (messages.length === 0) {
+                container.innerHTML = '<p>No messages published yet.</p>';
+                return;
+            }
+
+            // Render saved messages as HTML elements
+            container.innerHTML = messages.map(msg => `
+                <div class="message-box">
+                    <span class="author">${msg.author}</span>
+                    <span class="time">${msg.timestamp}</span>
+                    <div class="content">${msg.text}</div>
+                </div>
+            `).join('');
+        }
+
+        function clearMessages() {
+            localStorage.removeItem('mess_html_posts');
+            loadMessages();
+        }
+
+        // Run on page load
+        loadMessages();
+    </script>
+</body>
+</html>

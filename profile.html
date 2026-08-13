@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f9f9f9; }
+        .profile-card { background: white; max-width: 500px; margin: 0 auto; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        img { border-radius: 50%; display: block; margin: 0 auto 15px auto; }
+        h2 { text-align: center; margin-bottom: 5px; }
+        p.bio { text-align: center; color: #666; font-style: italic; }
+        form { margin-top: 20px; border-top: 1px solid #eee; padding-top: 15px; }
+        textarea { width: 100%; height: 80px; margin-bottom: 10px; border-radius: 4px; border: 1px solid #ccc; padding: 5px; box-sizing: border-box;}
+        button { background: #28a745; color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; width: 100%; }
+        button:hover { background: #218838; }
+        .nav-links { display: block; text-align: center; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+    <div class="profile-card">
+        <img id="avatar" src="" alt="Profile Photo" width="150" height="150">
+        <h2 id="userName">User Profile</h2>
+        <p class="bio" id="userBio"></p>
+
+        <!-- Message Form -->
+        <form id="messageForm">
+            <h3>Publish Message to Board</h3>
+            <textarea id="messageInput" placeholder="Write something..." required></textarea>
+            <button type="submit">Publish Message</button>
+        </form>
+
+        <a href="index.html" class="nav-links">← Back to Directory</a> | 
+        <a href="mess.html" class="nav-links">View All Messages (mess.html)</a>
+    </div>
+
+    <script>
+        // Extract URL Parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const profileId = urlParams.get('id') || "1";
+        const profileName = urlParams.get('name') || "John Doe";
+
+        // Populate Profile Info dynamically
+        document.getElementById('userName').textContent = profileName;
+        document.getElementById('userBio').textContent = `Hello! I am ${profileName}. Welcome to my profile page (#${profileId}). I love technology, design, and connecting with people!`;
+        document.getElementById('avatar').src = `https://picsum.photos/seed/${profileId}/150`;
+
+        // Handle Form Submission (Save to Local Storage)
+        document.getElementById('messageForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const text = document.getElementById('messageInput').value;
+
+            // Fetch existing messages from storage
+            const existingMessages = JSON.parse(localStorage.getItem('mess_html_posts') || '[]');
+
+            // Create new entry
+            const newMessage = {
+                author: profileName,
+                text: text,
+                timestamp: new Date().toLocaleString()
+            };
+
+            existingMessages.unshift(newMessage);
+
+            // Save back to client-side storage
+            localStorage.setItem('mess_html_posts', JSON.stringify(existingMessages));
+
+            // Redirect to mess.html
+            window.location.href = 'mess.html';
+        });
+    </script>
+</body>
+</html>

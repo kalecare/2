@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Directory (1,000 Profiles)</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f9; }
+        h1 { text-align: center; color: #333; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; padding: 20px; }
+        .card { background: #fff; padding: 10px; border-radius: 5px; text-decoration: none; color: #333; border: 1px solid #ddd; text-align: center; }
+        .card:hover { background: #e0e0e0; }
+    </style>
+</head>
+<body>
+
+    <h1>Directory of Profiles</h1>
+    <div class="grid" id="profileGrid"></div>
+
+    <script>
+        const firstNames = ["Alex", "Jordan", "Taylor", "Morgan", "Sam", "Chris", "Pat", "Riley", "Casey", "Jamie"];
+        const lastNames = ["Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", "Rodriguez", "Martinez"];
+
+        const grid = document.getElementById('profileGrid');
+
+        // Generate 1,000 named links
+        for (let i = 1; i <= 1000; i++) {
+            const firstName = firstNames[(i - 1) % firstNames.length];
+            const lastName = lastNames[Math.floor((i - 1) / 10) % lastNames.length];
+            const fullName = `${firstName} ${lastName} #${i}`;
+
+            const a = document.createElement('a');
+            a.className = 'card';
+            // Link passes profile ID and Name as URL parameters
+            a.href = `profile.html?id=${i}&name=${encodeURIComponent(fullName)}`;
+            a.textContent = fullName;
+            grid.appendChild(a);
+        }
+    </script>
+</body>
+</html>
